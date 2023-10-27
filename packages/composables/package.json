@@ -1,7 +1,8 @@
 {
-  "name": "@vt7/utils",
+  "name": "@vt7/composables",
   "version": "5.0.0",
-  "description": "Opinionated collection of common JavaScript / TypeScript utils by @vt7",
+  "description": "",
+  "license": "MIT",
   "sideEffects": false,
   "type": "module",
   "exports": {
@@ -14,11 +15,6 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "author": "Vu Thanh Bay <vuthanhbayit@gmail.com>",
-  "license": "MIT",
-  "keywords": [
-    "utils"
-  ],
   "files": [
     "dist"
   ],
@@ -29,10 +25,20 @@
     "lint": "eslint --cache --ext .ts,.js,.mjs,.cjs --ignore-path .gitignore . && prettier -c src test",
     "lint:fix": "eslint --cache --ext .ts,.js,.mjs,.cjs --ignore-path .gitignore . --fix && prettier -c src test -w",
     "prepack": "pnpm run build",
-    "release": "pnpm test && changelogen --release && npm publish && git push --follow-tags",
-    "test": "pnpm lint && pnpm test:types && vitest run --coverage",
+    "release": "changelogen --release && npm publish && git push --follow-tags",
     "test:types": "tsc --noEmit --skipLibCheck",
     "prepublishOnly": "pnpm build"
+  },
+  "dependencies": {
+    "@vt7/utils": "workspace:*"
+  },
+  "peerDependencies": {
+    "@vueuse/core": ">=10.0.0",
+    "vue": ">=3.0.0 || >=2.7.0"
+  },
+  "devDependencies": {
+    "@vueuse/core": "^10.5.0",
+    "vue": "^3.3.7"
   },
   "publishConfig": {
     "access": "public"

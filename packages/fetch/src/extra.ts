@@ -1,6 +1,6 @@
 import Axios from 'axios'
 import { toArray } from '@vt7/utils'
-
+// @ts-ignore
 import type { AxiosInstance, AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 
 declare module 'axios' {

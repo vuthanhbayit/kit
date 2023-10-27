@@ -125,9 +125,6 @@ export const chuck = <T>(array: T[], length: number, zigzag = false): T[][] => {
   return chucks
 }
 
-const originalArray = [1, 2, 3, 4, 5]
-const chunkedArray = chuck(originalArray, 10)
-
 /**
  * Removes specified items from an array.
  *

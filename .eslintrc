@@ -6,6 +6,7 @@
     "unicorn/no-null": "off",
     "unicorn/prefer-module": "off",
     "unicorn/prefer-top-level-await": "off",
-    "unicorn/no-array-for-each": "off"
+    "unicorn/no-array-for-each": "off",
+    "import/named": "off"
   }
 }
