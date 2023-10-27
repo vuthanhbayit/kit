@@ -3,6 +3,11 @@
   "version": "5.0.1",
   "description": "This is a wrapper axios plugin",
   "license": "MIT",
+  "homepage": "https://github.com/vuthanhbayit/kit/tree/main/packages/fetch#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vuthanhbayit/kit/tree/main/packages/fetch"
+  },
   "sideEffects": false,
   "type": "module",
   "publishConfig": {

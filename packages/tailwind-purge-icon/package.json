@@ -4,6 +4,11 @@
   "description": "A repo purge icon using iconify for tailwind",
   "author": "Vu Thanh Bay <vuthanhbayit@gmail.com>",
   "license": "ISC",
+  "homepage": "https://github.com/vuthanhbayit/kit/tree/main/packages/tailwind-purge-icon#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vuthanhbayit/kit/tree/main/packages/tailwind-purge-icon"
+  },
   "scripts": {
     "build": "unbuild",
     "stub": "unbuild --stub",

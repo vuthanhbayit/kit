@@ -3,6 +3,11 @@
   "version": "5.0.1",
   "description": "",
   "license": "MIT",
+  "homepage": "https://github.com/vuthanhbayit/kit/tree/main/packages/iconify#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vuthanhbayit/kit/tree/main/packages/iconify"
+  },
   "sideEffects": false,
   "type": "module",
   "exports": {

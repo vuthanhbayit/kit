@@ -16,6 +16,11 @@
   "types": "./dist/index.d.ts",
   "author": "Vu Thanh Bay <vuthanhbayit@gmail.com>",
   "license": "MIT",
+  "homepage": "https://github.com/vuthanhbayit/kit/tree/main/packages/utils#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vuthanhbayit/kit/tree/main/packages/utils"
+  },
   "keywords": [
     "utils"
   ],
