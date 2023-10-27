@@ -16,8 +16,8 @@
     "test": "pnpm lint && pnpm test:types && vitest run --coverage",
     "test:types": "tsc --noEmit --skipLibCheck",
     "prepublishOnly": "pnpm build",
-    "ci:version": "npx changeset version && pnpm install --no-frozen-lockfile && git add .",
-    "ci:publish": "pnpm build && pnpm publish -r && && pnpm changeset tag"
+    "ci:version": "lerna version",
+    "ci:publish": "pnpm build && lerna publish from-package"
   },
   "resolutions": {
     "@vt7/fetch": "workspace:*",
@@ -28,7 +28,6 @@
     "vue": "3.3.7"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.26.2",
     "@types/node": "^20.8.2",
     "@vitest/coverage-v8": "^0.34.6",
     "@vt7/fetch": "workspace:*",
@@ -40,11 +39,13 @@
     "eslint": "^8.52.0",
     "eslint-config-unjs": "^0.2.1",
     "jiti": "^1.20.0",
+    "lerna": "^7.4.1",
     "prettier": "^3.0.3",
     "typescript": "^5.2.2",
     "unbuild": "^2.0.0",
     "vitest": "^0.34.6",
     "vue": "^3.3.7"
   },
-  "packageManager": "pnpm@8.9.2"
+  "packageManager": "pnpm@8.9.2",
+  "dependencies": {}
 }
