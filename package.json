@@ -16,8 +16,8 @@
     "test": "pnpm lint && pnpm test:types && vitest run --coverage",
     "test:types": "tsc --noEmit --skipLibCheck",
     "prepublishOnly": "pnpm build",
-    "ci:version": "npx changeset version",
-    "ci:publish": "pnpm publish -r"
+    "ci:version": "npx changeset version && pnpm install --no-frozen-lockfile && git add .",
+    "ci:publish": "pnpm build && pnpm publish -r && && pnpm changeset tag"
   },
   "resolutions": {
     "@vt7/fetch": "workspace:*",
