@@ -1,6 +1,6 @@
 {
   "name": "@vt7/fetch",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "This is a wrapper axios plugin",
   "license": "MIT",
   "sideEffects": false,

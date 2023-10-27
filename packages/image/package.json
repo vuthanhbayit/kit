@@ -1,6 +1,6 @@
 {
   "name": "@vt7/image",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "Reuse providers for @nuxt/image",
   "license": "MIT",
   "sideEffects": false,
