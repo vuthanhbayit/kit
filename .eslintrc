@@ -1,4 +1,11 @@
 {
   "extends": ["eslint-config-unjs"],
-  "rules": {}
+  "rules": {
+    "unicorn/no-array-reduce": "off",
+    "unicorn/no-nested-ternary": "off",
+    "unicorn/no-null": "off",
+    "unicorn/prefer-module": "off",
+    "unicorn/prefer-top-level-await": "off",
+    "unicorn/no-array-for-each": "off"
+  }
 }

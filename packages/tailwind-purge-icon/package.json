@@ -1,0 +1,42 @@
+{
+  "name": "@vt7/tailwind-purge-icon",
+  "version": "5.0.0",
+  "description": "A repo purge icon using iconify for tailwind",
+  "author": "Vu Thanh Bay <vuthanhbayit@gmail.com>",
+  "license": "ISC",
+  "scripts": {
+    "build": "unbuild",
+    "stub": "unbuild --stub",
+    "lint": "eslint --cache --ext .ts,.js,.mjs,.cjs . && prettier -c src test",
+    "lint:fix": "eslint --cache --ext .ts,.js,.mjs,.cjs . --fix && prettier -c src test -w",
+    "prepack": "pnpm run build",
+    "release": "changelogen --release && npm publish && git push --follow-tags",
+    "prepublishOnly": "pnpm build"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@iconify/json": "^2.2.129",
+    "@iconify/json-tools": "^1.0.10",
+    "@iconify/tools": "^3.0.5",
+    "@iconify/types": "^2.0.0",
+    "@iconify/utils": "^2.1.11",
+    "@vt7/utils": "workspace:*",
+    "tailwindcss": "^3.3.3"
+  }
+}

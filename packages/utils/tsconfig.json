@@ -6,11 +6,5 @@
     "esModuleInterop": true,
     "strict": true
   },
-  "exclude": [
-    "**/dist/**",
-    "**/examples/**",
-    "**/docs/**",
-    "**/playground/**",
-    "**/test/**"
-  ]
+  "include": ["src"]
 }

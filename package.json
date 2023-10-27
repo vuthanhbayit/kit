@@ -1,35 +1,31 @@
 {
-  "name": "packageName",
-  "version": "0.0.0",
+  "name": "@vt7/kit",
   "description": "",
-  "repository": "@vt7/packageName",
+  "private": true,
+  "repository": "@vt7/kit",
   "license": "MIT",
   "sideEffects": false,
   "type": "module",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
-    }
-  },
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
+  "workspaces": [
+    "packages/**"
   ],
   "scripts": {
-    "build": "unbuild",
-    "dev": "vitest dev",
-    "play": "jiti playground",
-    "lint": "eslint --cache --ext .ts,.js,.mjs,.cjs --ignore-path .gitignore . && prettier -c src test",
-    "lint:fix": "eslint --cache --ext .ts,.js,.mjs,.cjs --ignore-path .gitignore . --fix && prettier -c src test -w",
+    "build": "pnpm --filter './packages/**' prepack",
+    "build:stub": "pnpm --filter './packages/**' prepack --stub",
+    "lint": "eslint --cache --ext .ts,.js,.mjs,.cjs --ignore-path .gitignore .",
+    "lint:fix": "eslint --cache --ext .ts,.js,.mjs,.cjs --ignore-path .gitignore . --fix",
     "prepack": "pnpm run build",
     "release": "pnpm test && changelogen --release && npm publish && git push --follow-tags",
     "test": "pnpm lint && pnpm test:types && vitest run --coverage",
     "test:types": "tsc --noEmit --skipLibCheck",
     "prepublishOnly": "pnpm build"
+  },
+  "resolutions": {
+    "@vt7/fetch": "workspace:*",
+    "@vt7/iconify": "workspace:*",
+    "@vt7/image": "workspace:*",
+    "@vt7/tailwind-purge-icon": "workspace:*",
+    "@vt7/utils": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^20.8.2",
@@ -42,9 +38,6 @@
     "typescript": "^5.2.2",
     "unbuild": "^2.0.0",
     "vitest": "^0.34.6"
-  },
-  "publishConfig": {
-    "access": "public"
   },
   "packageManager": "pnpm@8.9.0"
 }
