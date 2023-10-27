@@ -5,6 +5,8 @@
 [![bundle][bundle-src]][bundle-href]
 [![Codecov][codecov-src]][codecov-href]
 
+The `@vt7/iconify` package is a package that generates svg folders that convert to iconify json.
+
 ## Usage
 
 Install package:

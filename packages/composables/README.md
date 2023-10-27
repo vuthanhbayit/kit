@@ -5,7 +5,7 @@
 [![bundle][bundle-src]][bundle-href]
 [![Codecov][codecov-src]][codecov-href]
 
-This is my package description.
+The `@vt7/composables` package provides Vue.js composables, enabling efficient reuse of application logic and components.
 
 ## Usage
 
@@ -29,10 +29,10 @@ Import:
 
 ```js
 // ESM
-import {} from "@vt7/composables";
+import { useFetchData } from "@vt7/composables";
 
 // CommonJS
-const {} = require("@vt7/composables");
+const { useFetchData } = require("@vt7/composables");
 ```
 
 ## License

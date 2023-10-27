@@ -5,7 +5,7 @@
 [![bundle][bundle-src]][bundle-href]
 [![Codecov][codecov-src]][codecov-href]
 
-A repo purge icon using iconify for tailwind
+The `@vt7/tailwind-purge-icon` package is a tailwind plugin that converts iconify json to icon utility class.
 
 ## Usage
 

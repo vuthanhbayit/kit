@@ -1,25 +1,15 @@
 # @vt7/kit
 
-[![npm version][npm-version-src]][npm-version-href]
-[![npm downloads][npm-downloads-src]][npm-downloads-href]
-[![bundle][bundle-src]][bundle-href]
-[![Codecov][codecov-src]][codecov-href]
+`@vt7/kit` is a monorepo project that encompasses various packages intended to facilitate web application development. This project adopts the Monorepo approach for managing and developing its sub-packages, which include:
 
-This is my package description.
+- [@vt7/utils](packages/utils/): The `@vt7/utils` package comprises common utilities and functions to streamline application development.
 
-## License
+- [@vt7/image](packages/image/): The `@vt7/image` package contains the providers for the @nuxt/image module.
 
-Made with 💛
+- [@vt7/composables](packages/vue-composables/): The `@vt7/composables` package provides Vue.js composables, enabling efficient reuse of application logic and components.
 
-Published under [MIT License](./LICENSE).
+- [@vt7/fetch](packages/axios-fetch/): The `@vt7/fetch` package is a wrapper of the Axios package, it contains functions that make it easier to work with axios and easier to debug and cancel.
 
-<!-- Badges -->
+- [@vt7/iconify](packages/iconify/): The `@vt7/iconify` package is a package that generates svg folders that convert to iconify json.
 
-[npm-version-src]: https://img.shields.io/npm/v/@vt7/kit?style=flat&colorA=18181B&colorB=F0DB4F
-[npm-version-href]: https://npmjs.com/package/@vt7/kit
-[npm-downloads-src]: https://img.shields.io/npm/dm/@vt7/kit?style=flat&colorA=18181B&colorB=F0DB4F
-[npm-downloads-href]: https://npmjs.com/package/@vt7/kit
-[codecov-src]: https://img.shields.io/codecov/c/gh/unjs/@vt7/kit/main?style=flat&colorA=18181B&colorB=F0DB4F
-[codecov-href]: https://codecov.io/gh/unjs/@vt7/kit
-[bundle-src]: https://img.shields.io/bundlephobia/minzip/@vt7/kit?style=flat&colorA=18181B&colorB=F0DB4F
-[bundle-href]: https://bundlephobia.com/result?p=@vt7/kit
+- [@vt7/tailwind-purge-icon](packages/tailwind-purge-icon/): The `@vt7/tailwind-purge-icon` package is a tailwind plugin that converts iconify json to icon utility class.

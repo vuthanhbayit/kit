@@ -5,7 +5,7 @@
 [![bundle][bundle-src]][bundle-href]
 [![Codecov][codecov-src]][codecov-href]
 
-This is a wrapper axios plugin
+The `@vt7/fetch` package is a wrapper of the Axios package, it contains functions that make it easier to work with axios and easier to debug and cancel.
 
 ## Usage
 

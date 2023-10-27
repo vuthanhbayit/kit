@@ -5,6 +5,8 @@
 [![bundle][bundle-src]][bundle-href]
 [![Codecov][codecov-src]][codecov-href]
 
+The `@vt7/image` package contains the providers for the @nuxt/image module.
+
 ## Usage
 
 Install package:
