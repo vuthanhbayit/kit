@@ -16,7 +16,7 @@
     "test": "pnpm lint && pnpm test:types && vitest run --coverage",
     "test:types": "tsc --noEmit --skipLibCheck",
     "prepublishOnly": "pnpm build",
-    "ci:version": "pnpx changeset version",
+    "ci:version": "npx changeset version",
     "ci:publish": "pnpm publish -r"
   },
   "resolutions": {
