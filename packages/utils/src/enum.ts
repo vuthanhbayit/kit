@@ -1,23 +1,45 @@
 import { forEach } from './object'
+import { Flatten, Replace } from './types'
+
+type EnumType = {
+  [key: string]: Record<string, any>
+}
+
+type Result<Enum extends EnumType, IndexKey extends keyof Enum[keyof Enum]> = Enum & {
+  [Key in keyof Enum as Enum[Key][IndexKey]]: Flatten<Replace<Enum[Key], IndexKey, Key>>
+}
 
 /**
- * Creates an enumeration (enum-like) object based on the input constants and a key index.
+ * Creates an enumeration object with keys based on a specified index from the input constants.
  *
- * @template U - A record type representing the constant values.
- * @template V - The value type of the constants.
- * @template T - The value type of the enumeration.
- * @template K - The key type for the key index.
+ * @template {EnumType} Enum - The enumeration type definition.
+ * @template {keyof Enum[keyof Enum]} IndexKey - The key to be used as the index.
  *
- * @param {U} constants - An object containing the constants as key-value pairs.
- * @param {K} keyIndex - The key index used to create the enumeration.
+ * @param {Enum} constants - The enumeration constants to be processed.
+ * @param {IndexKey} keyIndex - The key to be used as the index.
  *
- * @return {Record<keyof U | V[K], T>} An object representing the enumeration, where keys can be from the original constants or the values indexed by keyIndex.
+ * @returns {Result<Enum, IndexKey>} An enumeration object with keys generated from the specified index.
+ *
+ * @example
+ * const constants = {
+ *   A: { id: 1, name: 'Item A' },
+ *   B: { id: 2, name: 'Item B' },
+ * };
+ *
+ * const enumResult = createEnum(constants, 'id');
+ * // The 'enumResult' will be:
+ * // {
+ * //   A: { id: 'A', name: 'Item A' },
+ * //   1: { id: 1, name: 'Item A' },
+ * //   B: { id: 'B', name: 'Item B' },
+ * //   2: { id: 2, name: 'Item B' }
+ * // }
  */
-export const createEnum = <U extends Record<any, any>, V extends U[keyof U], T extends V, K extends keyof T>(
-  constants: U,
-  keyIndex: K,
-): Record<keyof U | V[K], T> => {
-  const mapper = new Map<keyof U | V[K], T>()
+export const createEnum = <Enum extends EnumType, IndexKey extends keyof Enum[keyof Enum]>(
+  constants: Enum,
+  keyIndex: IndexKey,
+): Result<Enum, IndexKey> => {
+  const mapper = new Map()
 
   forEach(constants, (data, key) => {
     if (!mapper.has(key)) {
