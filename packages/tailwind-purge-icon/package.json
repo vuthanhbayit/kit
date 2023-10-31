@@ -1,6 +1,6 @@
 {
   "name": "@vt7/tailwind-purge-icon",
-  "version": "5.0.3",
+  "version": "5.0.4",
   "description": "A repo purge icon using iconify for tailwind",
   "author": "Vu Thanh Bay <vuthanhbayit@gmail.com>",
   "license": "ISC",
