@@ -1,5 +1,8 @@
 import { createSharedComposable } from '@vueuse/core'
 import { isBrowser } from '@vt7/utils'
+import { onMounted } from 'vue'
+
+const SCROLL_BAR_STYLE_VARIABLE = '--scroll-bar-width'
 
 const getScrollBarWidth = () => {
   return window.innerWidth - document.body.clientWidth
@@ -8,6 +11,10 @@ const getScrollBarWidth = () => {
 export const useLockScreen = createSharedComposable(() => {
   let subscribers = 0
   let isScroll = true
+
+  onMounted(() => {
+    document.body.style.setProperty(SCROLL_BAR_STYLE_VARIABLE, getScrollBarWidth() + 'px')
+  })
 
   const onHiddenScrollBar = () => {
     if (!isBrowser) {
@@ -20,7 +27,7 @@ export const useLockScreen = createSharedComposable(() => {
       return
     }
 
-    document.body.style.paddingRight = getScrollBarWidth() + 'px'
+    document.body.style.paddingRight = `var(${SCROLL_BAR_STYLE_VARIABLE})`
     document.body.style.overflowY = 'hidden'
     document.body.style.touchAction = 'none'
     isScroll = false
