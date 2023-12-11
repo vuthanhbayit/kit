@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { at, groupBy, last, sample, range, shuffle, toArray, uniq, without, slice, chuck } from '../src'
+import { at, groupBy, last, sample, range, shuffle, toArray, uniq, without, splice, chuck } from '../src'
 
 test('toArray', () => {
   expect(toArray(2)).toStrictEqual([2])
@@ -146,28 +146,28 @@ describe('uniq', () => {
   })
 })
 
-describe('slice', () => {
-  test('should slice the array from start to end', () => {
+describe('splice', () => {
+  test('should splice the array from start to end', () => {
     const array = [1, 2, 3, 4, 5]
-    const result = slice(array, 1, 3)
+    const result = splice(array, 1, 3)
     expect(result).toEqual([1, 4, 5])
   })
 
   test('should handle negative start index', () => {
     const array = [1, 2, 3, 4, 5]
-    const result = slice(array, -2)
+    const result = splice(array, -2)
     expect(result).toEqual([1, 2, 3])
   })
 
   test('should handle undefined end index', () => {
     const array = [1, 2, 3, 4, 5]
-    const result = slice(array, 2)
+    const result = splice(array, 2)
     expect(result).toEqual([1, 2])
   })
 
   test('should return an empty array when end is less than start', () => {
     const array = [1, 2, 3, 4, 5]
-    const result = slice(array, 3, 2)
+    const result = splice(array, 3, 2)
     expect(result).toEqual([])
   })
 

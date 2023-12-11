@@ -272,7 +272,7 @@ export const uniq = <T, K extends keyof T>(array: T[], transform = (item: T) => 
  *                        the slice extends to the end of the array.
  * @returns {T[]} A new array containing the sliced elements.
  */
-export const slice = <T>(array: T[], start: number, end?: number): T[] => {
+export const splice = <T>(array: T[], start: number, end?: number): T[] => {
   const length = array.length
 
   if (isUndefined(end)) {
@@ -302,7 +302,7 @@ export const slice = <T>(array: T[], start: number, end?: number): T[] => {
  * @returns {T[]} - A new array containing up to 'count' elements from the input array.
  */
 export const limit = <T>(array: T[], count: number): T[] => {
-  return slice(array, count)
+  return splice(array, count)
 }
 
 /**

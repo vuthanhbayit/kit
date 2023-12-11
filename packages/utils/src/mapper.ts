@@ -21,8 +21,11 @@
  * const result4 = mapperWithValues('missing'); // Returns 'default'
  */
 
-export function createMapper<T, K extends keyof T>(map: T, missingValue?: T[K]): (key: K) => T[K] {
-  return (key: K): any => {
+export function createMapper<T extends Record<any, any>, K extends keyof T>(
+  map: T,
+  missingValue?: T[K],
+): (key: K) => T[K] {
+  return (key: K | string): any => {
     return key ? map[key] : missingValue
   }
 }
