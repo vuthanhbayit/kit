@@ -1,1 +1,1 @@
-export { getImage as imagorProvider } from "./providers/imagor";
+export { getImage as imagorProvider } from './providers/imagor'
