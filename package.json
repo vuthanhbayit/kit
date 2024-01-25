@@ -22,7 +22,6 @@
   "resolutions": {
     "@vt7/fetch": "workspace:*",
     "@vt7/iconify": "workspace:*",
-    "@vt7/image": "workspace:*",
     "@vt7/tailwind-purge-icon": "workspace:*",
     "@vt7/utils": "workspace:*",
     "vue": "3.3.7"
@@ -32,7 +31,6 @@
     "@vitest/coverage-v8": "^0.34.6",
     "@vt7/fetch": "workspace:*",
     "@vt7/iconify": "workspace:*",
-    "@vt7/image": "workspace:*",
     "@vt7/tailwind-purge-icon": "workspace:*",
     "@vt7/utils": "workspace:*",
     "changelogen": "^0.5.5",
