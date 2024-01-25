@@ -31,46 +31,10 @@ export const has = <T extends object, K extends keyof T>(object: T, property: K)
 }
 
 /**
- * Creates a new object with specified keys omitted.
- *
- * @template T
- * @template K
- * @param {T} obj - The object from which to omit keys.
- * @param {...K} keys - The keys to omit from the object.
- * @returns {Omit<T, K>} - A new object with the specified keys omitted.
- */
-export const omit = <T, K extends Extract<keyof T, string>>(obj: T, ...keys: K[]): Omit<T, K> => {
-  const _obj = { ...obj }
-  for (const key of keys) {
-    delete _obj[key]
-  }
-  return _obj
-}
-
-/**
- * Creates a new object with specified keys picked from an original object.
- *
- * @template T
- * @template K
- * @param {T} obj - The original object from which to pick keys.
- * @param {...K} keys - The keys to pick from the object.
- * @returns {Pick<T, K>} - A new object containing the specified keys picked from the original object.
- */
-export const pick = <T, K extends Extract<keyof T, string>>(obj: T, ...keys: K[]): Pick<T, K> => {
-  const _obj = {} as T
-
-  for (const key of keys) {
-    _obj[key] = obj[key]
-  }
-
-  return _obj
-}
-
-/**
  * @param obj
  * @param path
  * @param defaultVal
- * @example get({ a: {b: c: 1}} }, 'a.b') => {c: 1}
+ * @example get({ a: {b: { c: 1 }} }, 'a.b') => {c: 1}
  */
 export const get = <T = any>(
   obj: Record<string, any> | undefined,

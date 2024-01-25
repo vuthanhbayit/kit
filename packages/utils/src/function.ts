@@ -193,3 +193,61 @@ export function size(data: any, isCompact = false): number {
 
   return data.length
 }
+
+/**
+ * Omit specified keys from an object or an array of objects.
+ *
+ * @template T - The type of the input object or objects.
+ * @template K - The keys to omit from the object or objects.
+ * @param {T[] | Record<any, any>} obj - The input object or an array of objects.
+ * @param {...K} keys - The keys to omit from the object or objects.
+ * @returns {Omit<T, K>[] | Omit<T, K>} - The object with specified keys omitted or an array of objects with specified keys omitted.
+ */
+export function omit<T extends object, K extends Extract<keyof T, string>>(obj: T[], ...keys: K[]): Omit<T, K>[]
+export function omit<T extends object, K extends Extract<keyof T, string>>(obj: T, ...keys: K[]): Omit<T, K>
+export function omit(obj: unknown[] | Record<any, any>, ...keys: any[]): any {
+  if (isArray(obj)) {
+    return obj.reduce((acc, currentValue) => {
+      const _item = omit(currentValue, ...keys)
+
+      acc.push(_item)
+
+      return acc
+    }, [])
+  } else if (isObject(obj)) {
+    const _obj = { ...obj }
+    for (const key of keys) {
+      delete _obj[key]
+    }
+    return _obj
+  }
+
+  return obj
+}
+
+/**
+ * Pick specified keys from an object or an array of objects.
+ *
+ * @template T - The type of the input object or objects.
+ * @template K - The keys to pick from the object or objects.
+ * @param {T[] | Record<any, any>} obj - The input object or an array of objects.
+ * @param {...K} keys - The keys to pick from the object or objects.
+ * @returns {Pick<T, K>[] | Pick<T, K>} - The object with specified keys picked or an array of objects with specified keys picked.
+ */
+export function pick<T extends object, K extends Extract<keyof T, string>>(obj: T[], ...keys: K[]): Pick<T, K>[]
+export function pick<T extends object, K extends Extract<keyof T, string>>(obj: T, ...keys: K[]): Pick<T, K>
+export function pick(obj: unknown[] | Record<any, any>, ...keys: any[]): any {
+  if (isArray(obj)) {
+    return obj.map(item => pick(item, ...keys))
+  } else if (isObject(obj)) {
+    const _obj: Record<any, any> = {}
+
+    for (const key of keys) {
+      _obj[key] = obj[key]
+    }
+
+    return _obj
+  }
+
+  return obj
+}
