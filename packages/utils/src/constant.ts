@@ -38,7 +38,7 @@ type Result<Constant extends ConstantType, IndexKey extends keyof Constant[keyof
 export const buildConstants = <Constant extends ConstantType, IndexKey extends keyof Constant[keyof Constant]>(
   constants: Constant,
   keyIndex: IndexKey,
-): Result<Constant, IndexKey> => {
+): Result<Constant, IndexKey> & { getCoreConstants: () => Constant; getCoreValues: () => Record<string, any>[] } => {
   const mapper = new Map()
 
   forEach(constants, (data, key) => {
@@ -55,5 +55,13 @@ export const buildConstants = <Constant extends ConstantType, IndexKey extends k
     }
   })
 
-  return Object.fromEntries(mapper)
+  const _newConstants = Object.fromEntries(mapper)
+
+  Object.assign(_newConstants, {
+    getCoreConstants: (): Constant => constants,
+    getCoreValues: (): Record<string, any>[] => Object.values(constants),
+    countConstants: () => Object.keys(constants).length,
+  })
+
+  return _newConstants
 }
