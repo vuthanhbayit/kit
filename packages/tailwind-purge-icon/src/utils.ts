@@ -24,12 +24,12 @@ export const getCollectionAndName = (value: string) => {
   return value.match(REGEX_COLLECTION_AND_NAME_ICON)
 }
 
-export const renderCSSByIconData = (iconData: ExtendedIconifyIcon) => {
+export const renderCSSByIconData = (iconData: ExtendedIconifyIcon, lazyload = false) => {
   const _svg = new SVG(iconData)
   const svg = _svg.getSVG()
   const url = `url("data:image/svg+xml;utf8,${encodeSvgForCss(svg)}")`
 
   return {
-    '--icon': url,
+    [lazyload ? '--data-icon' : '--icon']: url,
   }
 }

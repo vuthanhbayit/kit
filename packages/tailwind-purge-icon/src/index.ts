@@ -34,24 +34,45 @@ const purgeIconPlugin = ({ collections, prefix }: Options) => {
         [`div[class*="${prefix}-"]`]: imageIcon,
       })
 
+      const getIconDataByCollection = (value: string) => {
+        const matches = getCollectionAndName(value)
+
+        if (!matches) {
+          return null
+        }
+
+        const [, _collectionName, _name] = matches
+        const collection = collections[_collectionName]
+        return getIconData(collection, _name)
+      }
+
       matchUtilities(
         {
           [prefix]: (value: string) => {
-            const matches = getCollectionAndName(value)
-
-            if (!matches) {
-              return null
-            }
-
-            const [, _collectionName, _name] = matches
-            const collection = collections[_collectionName]
-            const iconData = getIconData(collection, _name)
+            const iconData = getIconDataByCollection(value)
 
             if (!iconData) {
               return null
             }
 
             return renderCSSByIconData({ ...defaultIconProps, ...iconData })
+          },
+        },
+        {
+          values: getValues(collections),
+        },
+      )
+
+      matchUtilities(
+        {
+          [`${prefix}-lazy`]: (value: string) => {
+            const iconData = getIconDataByCollection(value)
+
+            if (!iconData) {
+              return null
+            }
+
+            return renderCSSByIconData({ ...defaultIconProps, ...iconData }, true)
           },
         },
         {
