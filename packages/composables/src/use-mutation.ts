@@ -1,12 +1,12 @@
 import { ref, type Ref } from 'vue'
 
-type Callback<T, V> = (variables: V) => Promise<T>
+type Callback<T, V> = (variables?: V) => Promise<T>
 
 interface Options<T, V> {
-  onValidate: (variables: V) => Promise<any> | any
-  onSuccess: (data: T, variables: V) => void
-  onError: (error: Error, variables: V) => void
-  onSettled: (data: T | null, error: Error | null, variables: V) => void
+  onValidate: (variables?: V) => Promise<any> | any
+  onSuccess: (data: T, variables?: V) => void
+  onError: (error: Error, variables?: V) => void
+  onSettled: (data: T | null, error: Error | null, variables?: V) => void
 }
 
 const DEFAULT_OPTIONS = {
@@ -25,7 +25,7 @@ export const useMutation = <T, V>(callback: Callback<T, V>, options?: Partial<Op
   const isError = ref(false)
   const isSuccess = ref(false)
 
-  const mutate = async (variables: V) => {
+  const mutate = async (variables?: V) => {
     try {
       isLoading.value = true
       isError.value = false
@@ -33,11 +33,7 @@ export const useMutation = <T, V>(callback: Callback<T, V>, options?: Partial<Op
       data.value = null
       error.value = null
 
-      const isValid = await onValidate(variables)
-
-      if (!isValid) {
-        return
-      }
+      await onValidate(variables)
 
       const response = await callback(variables)
 
@@ -45,6 +41,8 @@ export const useMutation = <T, V>(callback: Callback<T, V>, options?: Partial<Op
       isSuccess.value = true
 
       onSuccess(response, variables)
+
+      return response
     } catch (error_: any) {
       try {
         if (process.env.NODE_ENV !== 'production') {
