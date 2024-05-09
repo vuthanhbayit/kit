@@ -25,15 +25,15 @@ export const useMutation = <T, V>(callback: Callback<T, V>, options?: Partial<Op
   const isError = ref(false)
   const isSuccess = ref(false)
 
-  const mutate = async (variables?: V) => {
+  const mutate = async (variables?: V, shouldThrow = false) => {
     try {
+      await onValidate(variables)
+
       isLoading.value = true
       isError.value = false
       isSuccess.value = false
       data.value = null
       error.value = null
-
-      await onValidate(variables)
 
       const response = await callback(variables)
 
@@ -43,22 +43,36 @@ export const useMutation = <T, V>(callback: Callback<T, V>, options?: Partial<Op
       onSuccess(response, variables)
 
       return response
-    } catch (error_: any) {
+    } catch (__error: any) {
       try {
         if (process.env.NODE_ENV !== 'production') {
-          console.error(error)
+          console.error(__error)
         }
       } catch {}
 
-      error.value = error_
+      error.value = __error
       isError.value = true
 
-      onError(error_, variables)
+      onError(__error, variables)
+
+      if (shouldThrow) {
+        throw __error
+      }
     } finally {
       isLoading.value = false
 
       onSettled(data.value, error.value, variables)
     }
+  }
+
+  const mutateWithException = (variables?: V) => mutate(variables, true)
+
+  const reset = () => {
+    isLoading.value = false
+    isError.value = false
+    isSuccess.value = false
+    data.value = null
+    error.value = null
   }
 
   return {
@@ -68,5 +82,7 @@ export const useMutation = <T, V>(callback: Callback<T, V>, options?: Partial<Op
     isError,
     isSuccess,
     mutate,
+    mutateWithException,
+    reset,
   }
 }
