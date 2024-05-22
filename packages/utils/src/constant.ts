@@ -26,7 +26,7 @@ type Result<Constant extends ConstantType, IndexKey extends keyof Constant[keyof
  *   B: { id: 2, name: 'Item B' },
  * };
  *
- * const ConstantResult = createConstant(constants, 'id');
+ * const ConstantResult = defineConstant(constants, 'id');
  * // The 'ConstantResult' will be:
  * // {
  * //   A: { id: 1, name: 'Item A' },
@@ -35,10 +35,14 @@ type Result<Constant extends ConstantType, IndexKey extends keyof Constant[keyof
  * //   2: { id: 'B', name: 'Item B' }
  * // }
  */
-export const buildConstants = <Constant extends ConstantType, IndexKey extends keyof Constant[keyof Constant]>(
+export const defineConstant = <Constant extends ConstantType, IndexKey extends keyof Constant[keyof Constant]>(
   constants: Constant,
   keyIndex: IndexKey,
-): Result<Constant, IndexKey> & { getCoreConstants: () => Constant; getCoreValues: () => Record<string, any>[] } => {
+): Result<Constant, IndexKey> & {
+  getRaw: () => Constant
+  getRawValues: () => Record<string, any>[]
+  count: () => number
+} => {
   const mapper = new Map()
 
   forEach(constants, (data, key) => {
@@ -58,9 +62,9 @@ export const buildConstants = <Constant extends ConstantType, IndexKey extends k
   const _newConstants = Object.fromEntries(mapper)
 
   Object.assign(_newConstants, {
-    getCoreConstants: (): Constant => constants,
-    getCoreValues: (): Record<string, any>[] => Object.values(constants),
-    countConstants: () => Object.keys(constants).length,
+    getRaw: (): Constant => constants,
+    getRawValues: (): Record<string, any>[] => Object.values(constants),
+    count: () => Object.keys(constants).length,
   })
 
   return _newConstants
