@@ -35,7 +35,7 @@
     "prepublishOnly": "pnpm build"
   },
   "dependencies": {
-    "@vt7/utils": "workspace:*"
+    "@vt7/utils": "6.0.0"
   },
   "peerDependencies": {
     "@vueuse/core": ">=10.0.0",
@@ -47,5 +47,6 @@
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "gitHead": "3694c16e08ddfa4e20ab1af92a957c05c1fe5beb"
 }

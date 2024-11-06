@@ -15,7 +15,6 @@
     "release": "pnpm test && changelogen --release && npm publish && git push --follow-tags",
     "test": "pnpm lint && pnpm test:types && vitest run --coverage",
     "test:types": "tsc --noEmit --skipLibCheck",
-    "prepublishOnly": "pnpm build",
     "ci:version": "lerna version",
     "ci:publish": "pnpm build && lerna publish from-package"
   },
