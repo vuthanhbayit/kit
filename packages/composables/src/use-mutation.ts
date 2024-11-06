@@ -5,7 +5,7 @@ type Callback<T, V> = (variables?: V) => Promise<T>
 interface Options<T, V> {
   onValidate: (variables?: V) => Promise<any> | any
   onSuccess: (data: T, variables?: V) => void
-  onError: (error: Error, variables?: V) => void
+  onError: (error: any, variables?: V) => void
   onSettled: (data: T | null, error: Error | null, variables?: V) => void
 }
 
