@@ -19,10 +19,6 @@
     "ci:publish": "pnpm build && lerna publish from-package"
   },
   "resolutions": {
-    "@vt7/fetch": "workspace:*",
-    "@vt7/iconify": "workspace:*",
-    "@vt7/tailwind-purge-icon": "workspace:*",
-    "@vt7/utils": "workspace:*",
     "vue": "3.3.7"
   },
   "devDependencies": {
