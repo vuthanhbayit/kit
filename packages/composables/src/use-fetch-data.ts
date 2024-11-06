@@ -21,8 +21,8 @@ interface Options<R, T> {
   initialData: MayBeFn<T>
   transform: (response: R) => T
   onSuccess: (response: R) => void
-  onError: (error: Error) => void
-  onSettled: (data: T, error: Error | null) => void
+  onError: (error: any) => void
+  onSettled: (data: T, error: any) => void
 }
 
 const DEFAULT_OPTIONS: Options<any, any> = {
