@@ -45,13 +45,7 @@ export const createAxiosDebug = (axios: AxiosInstance) => {
       return
     }
 
-    console.groupCollapsed(
-      'Request error:',
-      '[' + (status + ' ' + statusText) + ']',
-      '[' + method?.toUpperCase() + ']',
-      url,
-    )
-    console.log(transformedDataByEnv(error.response))
+    console.log('Request error:', '[' + (status + ' ' + statusText) + ']', '[' + method?.toUpperCase() + ']', url)
     console.groupEnd()
   })
 
@@ -65,7 +59,7 @@ export const createAxiosDebug = (axios: AxiosInstance) => {
       return
     }
 
-    const { status, statusText } = error.response
+    const { status, statusText, data } = error.response
 
     if (!debug && !debugError) {
       return
@@ -78,7 +72,7 @@ export const createAxiosDebug = (axios: AxiosInstance) => {
       url,
       `+${getDuration(headers)}ms`,
     )
-    console.log(transformedDataByEnv(error.response))
+    console.log(transformedDataByEnv(data))
     console.groupEnd()
   })
 
