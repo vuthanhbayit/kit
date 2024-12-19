@@ -1,5 +1,4 @@
 import type { AxiosInstance } from 'axios'
-import { transformedDataByEnv } from './utils'
 
 declare module 'axios' {
   interface AxiosRequestConfig {
@@ -34,63 +33,65 @@ export const createAxiosDebug = (axios: AxiosInstance) => {
   })
 
   axios.onRequestError(error => {
-    if (!error || !error.config) {
+    if (!error || !error.config || !error.request) {
       return
     }
 
-    const { debug, debugError, method, url } = error.config
-    const { status, statusText } = error.request!
+    const { debug, debugError } = error.config
+    const { status, statusText, path, method } = error.request
 
     if (!debug && !debugError) {
       return
     }
 
-    console.log('Request error:', '[' + (status + ' ' + statusText) + ']', '[' + method?.toUpperCase() + ']', url)
+    console.log('Request error:', '[' + (status + ' ' + statusText) + ']', '[' + method?.toUpperCase() + ']', path)
     console.groupEnd()
   })
 
   axios.onResponseError(error => {
-    if (!error || !error.config) {
+    if (!error || !error.response || !error.config) {
       return
     }
 
-    const { debug, debugError, method, url, headers } = error.config
-    if (!error.response) {
-      return
-    }
-
-    const { status, statusText, data } = error.response
+    const { debug, debugError, headers } = error.config
 
     if (!debug && !debugError) {
       return
     }
 
+    const { status, statusText, data } = error.response
+    const { method, path } = error.request
     console.groupCollapsed(
       'Response error:',
       '[' + (status + ' ' + statusText) + ']',
       '[' + method?.toUpperCase() + ']',
-      url,
+      path,
       `+${getDuration(headers)}ms`,
     )
-    console.log(transformedDataByEnv(data))
+    console.table(data)
     console.groupEnd()
   })
 
   axios.onResponse(res => {
-    const { debug, method, headers, url } = res.config
+    if (!res || !res.config) {
+      return
+    }
+
+    const { debug, headers, method, url, params } = res.config
     const { status, statusText } = res
+    const searchParams = new URLSearchParams(params)
+    const path = searchParams.toString() ? url + '/?' + searchParams.toString() : url
 
     if (!debug) {
       return
     }
 
-    console.groupCollapsed(
+    console.log(
       '[' + (status + ' ' + statusText) + ']',
       '[' + method?.toUpperCase() + ']',
-      url,
+      path,
       `+${getDuration(headers)}ms`,
     )
-    console.groupEnd()
 
     return res
   })
