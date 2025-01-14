@@ -53,14 +53,15 @@ export const createAxiosDebug = (axios: AxiosInstance) => {
       return
     }
 
-    const { debug, debugError, headers } = error.config
+    const { debug, debugError, headers, url } = error.config
 
     if (!debug && !debugError) {
       return
     }
 
     const { status, statusText, data } = error.response
-    const { method, path } = error.request
+    const method = error.request.method || error.config.method
+    const path = error.request.path || url
     console.groupCollapsed(
       'Response error:',
       '[' + (status + ' ' + statusText) + ']',
