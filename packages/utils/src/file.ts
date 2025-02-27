@@ -20,6 +20,26 @@ export const getFileName = (fileName: string): string => {
 }
 
 /**
+ * Checks if a file is an image based on its extension.
+ *
+ * @param {string} fileName - The name of the file to check.
+ * @returns {boolean} True if the file is an image, otherwise false.
+ */
+export const isImage = (fileName: string): boolean => {
+  return Boolean(/\.(png|jpe?g|gif|webp|svg)(\?.*)?$/.test(fileName))
+}
+
+/**
+ * Checks if a file is a video based on its extension.
+ *
+ * @param {string} fileName - The name of the file to check.
+ * @returns {boolean} True if the file is a video, otherwise false.
+ */
+export const isVideo = (fileName: string): boolean => {
+  return Boolean(/\.(mp4|mkv|avi|mov|wmv|flv|webm|mpeg)(\?.*)?$/.test(fileName))
+}
+
+/**
  * Download an image from a URL.
  * @param {string} url - The URL of the image to download.
  * @param {string} [filename] - The desired name for the downloaded file. If not provided, the file will be saved with an empty name.
