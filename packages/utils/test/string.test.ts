@@ -1,5 +1,14 @@
-import { expect, test } from 'vitest'
-import { toString, toLowerCase, toUpperCase, toKebabCase, toSnakeCase, toCapitalize, toCamelCase } from '../src'
+import { describe, expect, test } from 'vitest'
+import {
+  toString,
+  toLowerCase,
+  toUpperCase,
+  toKebabCase,
+  toSnakeCase,
+  toCapitalize,
+  toCamelCase,
+  truncateText,
+} from '../src'
 
 test('toString', () => {
   expect(toString({})).toBe('[object Object]')
@@ -44,4 +53,62 @@ test('toCamelCase', () => {
   expect(toCamelCase('goodbye blue sky')).toBe('goodbyeBlueSky')
   expect(toCamelCase('GoodbyeBlueSky!')).toBe('goodbyeBlueSky')
   expect(toCamelCase('-Goodbye-Blue-Sky-')).toBe('goodbyeBlueSky')
+})
+
+describe('truncateText', () => {
+  test('should return original text when length is less than maxLength', () => {
+    const text = 'Short text'
+    expect(truncateText(text, 20)).toBe(text)
+  })
+
+  test('should truncate text with ellipsis when text has no extension', () => {
+    const text = 'This is a long text without extension'
+    expect(truncateText(text, 15)).toBe('This is a lo...')
+  })
+
+  test('should preserve file extension when truncating', () => {
+    const filename = 'very_long_filename_that_needs_truncating.txt'
+    expect(truncateText(filename, 20)).toBe('very_long_fil....txt')
+  })
+
+  test('should use custom ellipsis when provided', () => {
+    const filename = 'document_with_very_long_name.pdf'
+    expect(truncateText(filename, 20, '[...]')).toBe('document_wi[...].pdf')
+  })
+
+  test('should not preserve extension when preserveExtension is false', () => {
+    const filename = 'important_document.docx'
+    expect(truncateText(filename, 15, '...', false)).toBe('important_do...')
+  })
+
+  test('should handle dots within filename correctly', () => {
+    const filename = 'report.v1.2.final.xlsx'
+    expect(truncateText(filename, 15)).toBe('report.....xlsx')
+  })
+
+  test('should handle cases where extension is too long for maxLength', () => {
+    const filename = 'x.veryLongExtension'
+    expect(truncateText(filename, 10)).toBe('x.veryL...')
+  })
+
+  test('should handle filenames with dots at the end', () => {
+    const filename = 'strange.filename.'
+    expect(truncateText(filename, 10)).toBe('strange...')
+  })
+
+  test('should handle case with very long extension and short available space', () => {
+    const filename = 'a.verylongextension'
+    // Với maxLength = 10 và ellipsis "...", không đủ chỗ cho cả "a" + "..." + ".verylongextension"
+    expect(truncateText(filename, 10)).toBe('a.veryl...')
+  })
+
+  test('should truncate text with Unicode characters', () => {
+    const filename = 'Báo_cáo_tài_chính_năm_2024.xlsx'
+    expect(truncateText(filename, 20)).toBe('Báo_cáo_tài_....xlsx')
+  })
+
+  test('should handle paths with both slashes and extensions', () => {
+    const path = 'C:\\Users\\Admin\\Documents\\long_report.pdf'
+    expect(truncateText(path, 25)).toBe('C:\\Users\\Admin\\Doc....pdf')
+  })
 })

@@ -54,8 +54,8 @@ export const toWords = (string: unknown, pattern?: RegExp): string[] => {
   const patternRegExp = isDefined(pattern)
     ? pattern
     : REGEXP_EXTENDED_ASCII.test(subjectString)
-    ? REGEXP_LATIN_WORD
-    : REGEXP_WORD
+      ? REGEXP_LATIN_WORD
+      : REGEXP_WORD
 
   return subjectString.match(patternRegExp) || []
 }
@@ -200,4 +200,48 @@ export const removeVietnameseTones = (str: string) => {
   str = str.replace(/[!"#$%&'()*+,./:;<=>?@[\\]^_`{|}~-]/g, ' ')
 
   return str
+}
+
+/**
+ * Cắt ngắn văn bản
+ * @param text Văn bản cần cắt ngắn
+ * @param maxLength Độ dài tối đa (mặc định: 40)
+ * @param ellipsis Chuỗi dấu chấm lửng (mặc định: "...")
+ * @param preserveExtension Có giữ lại phần mở rộng file không (mặc định: true)
+ * @returns Văn bản đã được cắt ngắn
+ */
+export function truncateText(text: string, maxLength = 40, ellipsis = '...', preserveExtension = true): string {
+  // Nếu văn bản đã ngắn hơn độ dài tối đa, không cần cắt
+  if (text.length <= maxLength) {
+    return text
+  }
+
+  // Nếu không cần giữ lại phần mở rộng hoặc không có dấu chấm
+  if (!preserveExtension || !text.includes('.')) {
+    // Cắt đơn giản, thêm dấu chấm lửng ở cuối
+    return text.slice(0, Math.max(0, maxLength - ellipsis.length)) + ellipsis
+  }
+
+  // Tìm vị trí dấu chấm cuối cùng để xác định phần mở rộng
+  const lastDotIndex = text.lastIndexOf('.')
+
+  // Nếu dấu chấm ở cuối cùng hoặc không có phần mở rộng
+  if (lastDotIndex === text.length - 1 || lastDotIndex === -1) {
+    return text.slice(0, Math.max(0, maxLength - ellipsis.length)) + ellipsis
+  }
+
+  // Lấy phần mở rộng (bao gồm cả dấu chấm)
+  const extension = text.slice(Math.max(0, lastDotIndex))
+
+  // Tính số ký tự có thể hiển thị ở phần tên
+  const availableCharsForName = maxLength - extension.length - ellipsis.length
+
+  // Nếu không đủ chỗ cho phần tên
+  if (availableCharsForName <= 0) {
+    // Cắt phần mở rộng để vừa với độ dài tối đa
+    return text.slice(0, Math.max(0, maxLength - ellipsis.length)) + ellipsis
+  }
+
+  // Kết hợp phần tên + dấu chấm lửng + phần mở rộng
+  return text.slice(0, Math.max(0, availableCharsForName)) + ellipsis + extension
 }
