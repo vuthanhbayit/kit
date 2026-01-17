@@ -8,4 +8,7 @@ test('toCssUnit', () => {
   expect(toCssUnit('5em')).toBe('5em')
   expect(toCssUnit('50%')).toBe('50%')
   expect(toCssUnit('50', '%')).toBe('50%')
+  // Test undefined input (lines 13-15)
+  expect(toCssUnit(undefined)).toBeUndefined()
+  expect(toCssUnit()).toBeUndefined()
 })

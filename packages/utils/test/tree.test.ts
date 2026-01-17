@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { expandNode, toTree } from '../src'
+import { expandNode, toTree, getChildren, forEachTree, expandAllNodes, collapseAllNodes } from '../src'
 
 const array = [
   { id: 1, parentId: null, name: 'Node 1' },
@@ -114,5 +114,84 @@ describe('expandNode', () => {
     const result = expandNode(tree, 'id', 4)
 
     expect(result).toEqual(expectedResult)
+  })
+})
+
+describe('getChildren', () => {
+  test('should return children of a node', () => {
+    const tree = toTree(array, { id: 'id', parentId: 'parentId' })
+    const children = getChildren(tree, 'id', 1)
+
+    expect(children).toHaveLength(2)
+    expect(children[0].data.id).toBe(2)
+    expect(children[1].data.id).toBe(3)
+  })
+
+  test('should return children of nested node', () => {
+    const tree = toTree(array, { id: 'id', parentId: 'parentId' })
+    const children = getChildren(tree, 'id', 2)
+
+    expect(children).toHaveLength(1)
+    expect(children[0].data.id).toBe(4)
+  })
+
+  test('should return empty array for leaf node', () => {
+    const tree = toTree(array, { id: 'id', parentId: 'parentId' })
+    const children = getChildren(tree, 'id', 4)
+
+    expect(children).toHaveLength(0)
+  })
+
+  test('should return empty array for non-existent node', () => {
+    const tree = toTree(array, { id: 'id', parentId: 'parentId' })
+    const children = getChildren(tree, 'id', 999)
+
+    expect(children).toHaveLength(0)
+  })
+})
+
+describe('forEachTree', () => {
+  test('should iterate over all nodes in tree', () => {
+    const tree = toTree(array, { id: 'id', parentId: 'parentId' })
+    const visitedIds: number[] = []
+
+    forEachTree(tree, node => {
+      visitedIds.push(node.data.id)
+    })
+
+    expect(visitedIds).toEqual([1, 2, 4, 3, 5])
+  })
+})
+
+describe('expandAllNodes', () => {
+  test('should expand all nodes in tree', () => {
+    const tree = toTree(array, { id: 'id', parentId: 'parentId' })
+    expandAllNodes(tree)
+
+    const checkExpanded = (nodes: typeof tree) => {
+      for (const node of nodes) {
+        expect(node.isExpanded).toBe(true)
+        checkExpanded(node.children)
+      }
+    }
+
+    checkExpanded(tree)
+  })
+})
+
+describe('collapseAllNodes', () => {
+  test('should collapse all nodes in tree', () => {
+    const tree = toTree(array, { id: 'id', parentId: 'parentId' })
+    expandAllNodes(tree)
+    collapseAllNodes(tree)
+
+    const checkCollapsed = (nodes: typeof tree) => {
+      for (const node of nodes) {
+        expect(node.isExpanded).toBe(false)
+        checkCollapsed(node.children)
+      }
+    }
+
+    checkCollapsed(tree)
   })
 })

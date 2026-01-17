@@ -1,5 +1,8 @@
+/**
+ * @vitest-environment happy-dom
+ */
 import { expect, test, describe } from 'vitest'
-import { detectMimeType, isBase64, isMimeBase64, withMimeBase64 } from '../src'
+import { detectMimeType, isBase64, isMimeBase64, withMimeBase64, getMimeBase64, toBase64 } from '../src'
 
 const list = [
   'iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==',
@@ -9,8 +12,28 @@ const list = [
   'iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAQXSURBVHgB7Zp7aBRHHMe/M7u3d5eYNGeTpkmrBrEgSvWw0oIV8YqFItVcH3/UUqkabNE/avpH/2gNmND+0b9KFUVRFESJgg+S+AD/UKIgoqKeb/GViM/4iImnub1kd8eZOROignuJc+ct+IFh92aGnd935/H77cwRvMC9aHgqtawoIbQSYBXIBRiJEcJipqbVlTXEWvsXkd6blmi4qMhxljDGqpHDcIP/R1yrCzXHOp79ThlfaFnNhJDx8ACE9wge04gQQUWGePNeMV7ACAujwF4i7sntaLjCb9st8CC2xiLUsO1aeBRq0Sj10tB5Eb4yVVIwFMG7VFB4nDcrgFLQUDFeBx0ZgOYXgoRC0IZ/BBLMB3wGaMn7PJWBvjMU4Hl0aAmISLoP1umjiC+uwmBIW4AwRB8xCsjjjYd4w8XcoOJSaQDhRtGyYal8Xj5gI8ZMwGBJS4DxWQR51f+A5Bcg13AVQN8tRd5vf/cZz8wu7kEsqMRpv4/B4i6gfBhIQaG8Z0/i6Jj1OXKJAU1i0QuBytl80h1BJrHbbsmXlQ4DXoWCVX8g4zAH5vplSGxf51o1Nx0ZoQjMqYbv44muVXPaE+tjPnGvgwxgnTqM7n070HP+RMpPcAfmGx2GEZkBWlqe/oOo+/tV3gPmppWI18xHz5H98IUnwTdhMkgyAXPLanTO/wrJpo1QidIe6Dm6HwkuIPjtXPh/XAhi+PvKWGc7zKYN0Md9CpUoFWDFDslu939X9ZzxAhFuBGcvgmqUDiGW4F6aajwRZAulAoxJ03g39MCsX8HVMGQDpQL0iVPk+Dd31KNz4Ux0N+9KxU4ZRPkyGpjzO+jwkUjUr8ST//6Uef4p0xH44RfQD0dCNRnxA8YXlTJZF06ie89WuaQmD+yG/8tvkLeghrfqgyoyIqDv4aPHy+Q8aENy52aY29bySM2W3xaqyEooIb4pgj8vQmDmT0jua4J17jhUkdVYyIh8La/2tctQhVIBTtvNVy6fzv278qqVfgBVKBPAkibif83Do1+nwzpz7KVy++JpdK35F/S9cmhj3aPMdFE2iYk/gOCsBUhsXsWFzIU2aiy08hHyK86+fgXW2WN8x2IIhtQsk3VVoXQVMqZFuTObDOv4QXTvbYR99bwM4khRsZzA/u+rUvtCCnEXYDsYCJQb2+sHXhu+5Lq25/qMa5fg3LuNbCMCQ+H83HAVIHYH4ovnwbnRimzBHnWga3ktnDs3XOuS9hnjWnLmNHIQvN1ef9N4WwA/bqWMoBEeRZzeU8dxGuBVNK2Oluw808wYWwqPIWwONcRa5Rygul7Lj1tj8Ag84D0pbBb3UgBX0sH3cyJe6AlhI9W1qdJm9Pu3Si8Po+EKh5/eywNwxsLICUgrY04jj8oaxJDvX/IU6ghPhNBzjbIAAAAASUVORK5CYII=',
 ]
 
-test('detectMimeType', () => {
-  expect(detectMimeType(list[0])).toStrictEqual('image/png')
+describe('detectMimeType', () => {
+  test('should detect PNG mime type', () => {
+    expect(detectMimeType(list[0])).toStrictEqual('image/png')
+  })
+
+  test('should detect PDF mime type', () => {
+    expect(detectMimeType('JVBERi0xLjQKJeLjz9MK')).toStrictEqual('application/pdf')
+  })
+
+  test('should detect GIF mime type', () => {
+    expect(detectMimeType('R0lGODdhAQABAIAAAP///////ywAAAAAAQABAAACAkQBADs=')).toStrictEqual('image/gif')
+    expect(detectMimeType('R0lGODlhAQABAIAAAP///////yH5BAEAAAEALAAAAAABAAEAAAICTAEAOw==')).toStrictEqual('image/gif')
+  })
+
+  test('should detect JPG mime type', () => {
+    expect(detectMimeType('/9j/4AAQSkZJRgABAQAAAQABAAD')).toStrictEqual('image/jpg')
+  })
+
+  test('should return undefined for unknown mime type', () => {
+    expect(detectMimeType('unknownbase64string')).toBeUndefined()
+    expect(detectMimeType('AAAA')).toBeUndefined()
+  })
 })
 
 describe('isBase64', () => {
@@ -23,4 +46,49 @@ describe('isMimeBase64', () => {
   test.each(list)('', string => {
     expect(isMimeBase64(withMimeBase64(string))).toStrictEqual(true)
   })
+
+  test('should return false for base64 without mime prefix', () => {
+    expect(isMimeBase64(list[0])).toStrictEqual(false)
+  })
+})
+
+describe('withMimeBase64', () => {
+  test('should add mime prefix to base64 without prefix', () => {
+    const result = withMimeBase64(list[0])
+    expect(result).toStrictEqual(`data:image/png;base64,${list[0]}`)
+  })
+
+  test('should return same string if already has mime prefix', () => {
+    const withPrefix = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUg=='
+    expect(withMimeBase64(withPrefix)).toStrictEqual(withPrefix)
+  })
+
+  test('should return original string if mime type cannot be detected', () => {
+    const unknownBase64 = 'unknownbase64string'
+    expect(withMimeBase64(unknownBase64)).toStrictEqual(unknownBase64)
+  })
+})
+
+describe('getMimeBase64', () => {
+  test('should extract mime type from base64 with prefix', () => {
+    expect(getMimeBase64('data:image/png;base64,iVBORw0KGgo=')).toStrictEqual('image/png')
+    expect(getMimeBase64('data:application/pdf;base64,JVBERi0=')).toStrictEqual('application/pdf')
+    expect(getMimeBase64('data:image/jpeg;base64,/9j/4AAQ')).toStrictEqual('image/jpeg')
+  })
+
+  test('should return undefined for base64 without mime prefix', () => {
+    expect(getMimeBase64(list[0])).toBeUndefined()
+    expect(getMimeBase64('randomstring')).toBeUndefined()
+  })
+})
+
+describe('toBase64', () => {
+  test('should convert Blob to base64', async () => {
+    const blob = new Blob(['hello'], { type: 'text/plain' })
+    const result = await toBase64(blob)
+    expect(result).toContain('data:text/plain;base64,')
+  })
+
+  // Note: String URL input test is skipped because toBlob() requires
+  // actual fetch which is not available in happy-dom environment
 })

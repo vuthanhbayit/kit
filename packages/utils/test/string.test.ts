@@ -8,6 +8,8 @@ import {
   toCapitalize,
   toCamelCase,
   truncateText,
+  toWords,
+  removeVietnameseTones,
 } from '../src'
 
 test('toString', () => {
@@ -19,6 +21,25 @@ test('toString', () => {
   expect(toString(1)).toBe('1')
   expect(toString(Symbol('a'))).toBe('Symbol(a)')
   expect(toString('is string')).toBe('is string')
+  // Test undefined with default value (lines 22-24)
+  expect(toString(undefined)).toBe('')
+  expect(toString(undefined, 'default')).toBe('default')
+})
+
+test('toWords', () => {
+  expect(toWords('hello world')).toStrictEqual(['hello', 'world'])
+  expect(toWords('HelloWorld')).toStrictEqual(['Hello', 'World'])
+  // Test with custom pattern (lines 54-58)
+  expect(toWords('apple,banana,orange', /\w+/g)).toStrictEqual(['apple', 'banana', 'orange'])
+  expect(toWords('no-match', /\d+/g)).toStrictEqual([])
+})
+
+test('removeVietnameseTones', () => {
+  expect(removeVietnameseTones('Xin chào Việt Nam')).toBe('Xin chao Viet Nam')
+  expect(removeVietnameseTones('Thầy giáo dạy kỹ thuật')).toBe('Thay giao day ky thuat')
+  expect(removeVietnameseTones('ÀÁÂÃĂẠẢẤẦẨẪẬẮẰẲẴẶ')).toBe('AAAAAAAAAAAAAAAAA')
+  expect(removeVietnameseTones('đường Đống Đa')).toBe('duong Dong Da')
+  expect(removeVietnameseTones('test@email.com')).toBe('test email com')
 })
 
 test('toLowerCase', () => {

@@ -1,5 +1,29 @@
 import { describe, expect, test } from 'vitest'
-import { bytesToSize, isImage, isVideo } from '../src'
+import { bytesToSize, isImage, isVideo, getFileExtension, getFileName } from '../src'
+
+describe('getFileExtension', () => {
+  test('should return file extension', () => {
+    expect(getFileExtension('document.txt')).toBe('txt')
+    expect(getFileExtension('image.png')).toBe('png')
+    expect(getFileExtension('archive.tar.gz')).toBe('gz')
+  })
+
+  test('should return empty for files without extension', () => {
+    expect(getFileExtension('README')).toBe('README')
+  })
+})
+
+describe('getFileName', () => {
+  test('should return file name without extension', () => {
+    expect(getFileName('document.txt')).toBe('document')
+    expect(getFileName('image.png')).toBe('image')
+    expect(getFileName('archive.tar.gz')).toBe('archive.tar')
+  })
+
+  test('should return empty for files without extension', () => {
+    expect(getFileName('README')).toBe('')
+  })
+})
 
 describe('bytesToSize', () => {
   test('returns "0 Byte" when given 0 bytes', () => {

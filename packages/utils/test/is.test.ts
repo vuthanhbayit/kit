@@ -106,6 +106,13 @@ test('isArrayLike', () => {
   expect(isArrayLike(true)).toBe(false)
   expect(isArrayLike({ length: 10 })).toBe(false)
   expect(isArrayLike({ 0: 'zero', 9: 'nine', length: 10 })).toBe(true)
+  // Test falsy values (lines 24-26)
+  expect(isArrayLike(null)).toBe(false)
+  expect(isArrayLike(undefined)).toBe(false)
+  expect(isArrayLike(0)).toBe(false)
+  expect(isArrayLike('')).toBe(false)
+  // Test string input (line 27-29)
+  expect(isArrayLike('hello')).toBe(false)
 })
 
 test('isEqual', () => {
@@ -121,6 +128,10 @@ test('isEqual', () => {
   expect(isEqual(null, null)).toBe(true)
   expect(isEqual(undefined, undefined)).toBe(true)
   expect(isEqual(true, true)).toBe(true)
+  // Test different types (lines 46-48)
+  expect(isEqual('1', 1)).toBe(false)
+  expect(isEqual(true, 'true')).toBe(false)
+  expect(isEqual(null, undefined)).toBe(false)
 })
 
 test('isStrictEqual', () => {
@@ -136,6 +147,10 @@ test('isStrictEqual', () => {
   expect(isStrictEqual(null, null)).toBe(true)
   expect(isStrictEqual(undefined, undefined)).toBe(true)
   expect(isStrictEqual(true, true)).toBe(true)
+  // Test different types (lines 67-69)
+  expect(isStrictEqual('1', 1)).toBe(false)
+  expect(isStrictEqual(true, 'true')).toBe(false)
+  expect(isStrictEqual(null, undefined)).toBe(false)
 })
 
 test('isEmpty', () => {
