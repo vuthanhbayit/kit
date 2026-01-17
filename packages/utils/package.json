@@ -1,6 +1,6 @@
 {
   "name": "@vt7/utils",
-  "version": "6.6.0",
+  "version": "7.0.0",
   "description": "Opinionated collection of common JavaScript / TypeScript utils by @vt7",
   "sideEffects": false,
   "type": "module",
