@@ -49,11 +49,15 @@ export const get = <T = any>(
         .split('.')
         .filter(i => i.length)
 
-  if (obj && _path.length > 0) {
-    return get(obj[_path.shift()!], _path, defaultVal)
+  let current: any = obj
+  for (const key of _path) {
+    if (current == null) {
+      return defaultVal
+    }
+    current = current[key]
   }
 
-  return obj === undefined ? defaultVal : (obj as unknown as T)
+  return current === undefined ? defaultVal : (current as T)
 }
 
 const entries = <T extends object, K extends keyof T>(object: T): Array<[K, T[K]]> => {

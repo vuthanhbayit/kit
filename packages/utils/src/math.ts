@@ -39,9 +39,19 @@ export const average = <T>(array: T[], transform = (props: T) => props as unknow
  * @returns {number} - The minimum value in the transformed array.
  */
 export const min = <T>(array: T[], transform = (props: T) => props as unknown as number): number => {
-  const transformedArray = array.map(element => transform(element))
+  if (array.length === 0) {
+    return Number.POSITIVE_INFINITY
+  }
 
-  return Math.min(...transformedArray)
+  let minValue = transform(array[0])
+  for (let i = 1; i < array.length; i++) {
+    const value = transform(array[i])
+    if (value < minValue) {
+      minValue = value
+    }
+  }
+
+  return minValue
 }
 
 /**
@@ -53,7 +63,17 @@ export const min = <T>(array: T[], transform = (props: T) => props as unknown as
  * @returns {number} - The maximum value in the transformed array.
  */
 export const max = <T>(array: T[], transform = (props: T) => props as unknown as number): number => {
-  const transformedArray = array.map(element => transform(element))
+  if (array.length === 0) {
+    return Number.NEGATIVE_INFINITY
+  }
 
-  return Math.max(...transformedArray)
+  let maxValue = transform(array[0])
+  for (let i = 1; i < array.length; i++) {
+    const value = transform(array[i])
+    if (value > maxValue) {
+      maxValue = value
+    }
+  }
+
+  return maxValue
 }

@@ -160,6 +160,32 @@ export const toCamelCase = (string: string): string => {
     .join('')
 }
 
+const VIETNAMESE_TONE_MAP: Record<string, string> = {
+  àáâãăạảấầẩẫậắằẳẵặ: 'a',
+  èéêẹẻẽếềểễệ: 'e',
+  ìíĩỉị: 'i',
+  òóôõơọỏốồổỗộớờởỡợ: 'o',
+  ùúũưụủứừửữự: 'u',
+  ýỳỵỷỹ: 'y',
+  đ: 'd',
+  ÀÁÂÃĂẠẢẤẦẨẪẬẮẰẲẴẶ: 'A',
+  ÈÉÊẸẺẼẾỀỂỄỆ: 'E',
+  ÌÍĨỈỊ: 'I',
+  ÒÓÔÕƠỌỎỐỒỔỖỘỚỜỞỠỢ: 'O',
+  ÙÚŨƯỤỦỨỪỬỮỰ: 'U',
+  ÝỲỴỶỸ: 'Y',
+  Đ: 'D',
+}
+
+const VIETNAMESE_CHAR_MAP = new Map<string, string>()
+for (const [chars, replacement] of Object.entries(VIETNAMESE_TONE_MAP)) {
+  for (const char of chars) {
+    VIETNAMESE_CHAR_MAP.set(char, replacement)
+  }
+}
+
+const VIETNAMESE_TONE_REGEX = new RegExp(`[${Object.keys(VIETNAMESE_TONE_MAP).join('')}]`, 'g')
+
 /**
  * Removes Vietnamese tones and special characters from a string, while preserving the basic Latin alphabet.
  *
@@ -172,34 +198,21 @@ export const toCamelCase = (string: string): string => {
  * const cleanedString = removeVietnameseTones(originalString); // Returns "Thay giao day ky thuat lap trinh"
  */
 export const removeVietnameseTones = (str: string) => {
-  str = str.replace(/[àáâãăạảấầẩẫậắằẳẵặ]/g, 'a')
-  str = str.replace(/[èéêẹẻẽếềểễệ]/g, 'e')
-  str = str.replace(/[ìíĩỉị]/g, 'i')
-  str = str.replace(/[òóôõơọỏốồổỗộớờởỡợ]/g, 'o')
-  str = str.replace(/[ùúũưụủứừửữự]/g, 'u')
-  str = str.replace(/[ýỳỵỷỹ]/g, 'y')
-  str = str.replace(/đ/g, 'd')
-  str = str.replace(/[ÀÁÂÃĂẠẢẤẦẨẪẬẮẰẲẴẶ]/g, 'A')
-  str = str.replace(/[ÈÉÊẸẺẼẾỀỂỄỆ]/g, 'E')
-  str = str.replace(/[ÌÍĨỈỊ]/g, 'I')
-  str = str.replace(/[ÒÓÔÕƠỌỎỐỒỔỖỘỚỜỞỠỢ]/g, 'O')
-  str = str.replace(/[ÙÚŨƯỤỦỨỪỬỮỰ]/g, 'U')
-  str = str.replace(/[ÝỲỴỶỸ]/g, 'Y')
-  str = str.replace(/Đ/g, 'D')
-  // Some system encode vietnamese combining accent as individual utf-8 characters
-  // Một vài bộ encode coi các dấu mũ, dấu chữ như một kí tự riêng biệt nên thêm hai dòng này
-  str = str.replace(/[\u0300\u0301\u0303\u0309\u0323]/g, '') // ̀ ́ ̃ ̉ ̣  huyền, sắc, ngã, hỏi, nặng
-  // eslint-disable-next-line no-misleading-character-class
-  str = str.replace(/[\u02C6\u0306\u031B]/g, '') // ˆ ̆ ̛  Â, Ê, Ă, Ơ, Ư
-  // Remove extra spaces
-  // Bỏ các khoảng trắng liền nhau
-  str = str.replace(/ + /g, ' ')
-  str = str.trim()
-  // Remove punctuations
-  // Bỏ dấu câu, kí tự đặc biệt
-  str = str.replace(/[!"#$%&'()*+,./:;<=>?@[\\]^_`{|}~-]/g, ' ')
-
-  return str
+  return (
+    str
+      .replace(VIETNAMESE_TONE_REGEX, char => VIETNAMESE_CHAR_MAP.get(char) || char)
+      .replace(/\u0300/g, '') // huyền
+      .replace(/\u0301/g, '') // sắc
+      .replace(/\u0303/g, '') // ngã
+      .replace(/\u0309/g, '') // hỏi
+      .replace(/\u0323/g, '') // nặng
+      .replace(/\u02C6/g, '') // Â, Ê
+      .replace(/\u0306/g, '') // Ă
+      .replace(/\u031B/g, '') // Ơ, Ư
+      .replace(/ +/g, ' ')
+      .trim()
+      .replace(/[!"#$%&'()*+,./:;<=>?@[\\\]^_`{|}~-]/g, ' ')
+  )
 }
 
 /**
