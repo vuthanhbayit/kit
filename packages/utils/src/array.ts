@@ -66,20 +66,18 @@ export const toArray = <T>(value: T | T[] | null): T[] => {
  * const result3 = range(10, 1, -1); // Returns [10, 9, 8, 7, 6, 5, 4, 3, 2]
  */
 export function range(start: number, stop: number, step = 1): number[] {
-  const arr: number[] = []
-  let current = start
   const isReversed = start > stop
+  const actualStep = isReversed ? -Math.abs(step) : Math.abs(step)
 
-  if (isReversed) {
-    while (current > stop) {
-      arr.push(current)
-      current -= step
-    }
-  } else {
-    while (current < stop) {
-      arr.push(current)
-      current += step
-    }
+  if (actualStep === 0) {
+    return []
+  }
+
+  const length = Math.max(0, Math.ceil((stop - start) / actualStep))
+  const arr: number[] = Array.from({ length })
+
+  for (let i = 0; i < length; i++) {
+    arr[i] = start + i * actualStep
   }
 
   return arr
@@ -154,6 +152,48 @@ export function without<T, V = T>(array: T[], ...args: any[]): T[] {
   }
 
   return array.filter(item => !ignoreItems.includes(transform(item)))
+}
+
+/**
+ * Filters an array to only include items that match the specified values.
+ * Opposite of `without()`.
+ *
+ * @template T - The type of elements in the array.
+ * @template V - The type of values to include (default is the same as T).
+ * @param {T[]} array - The array to filter.
+ * @param {...V[]} includeItems - The values to include in the result.
+ * @returns {T[]} - A new array with only the matching items.
+ *
+ * @example
+ * // Filter primitive array
+ * within([1, 2, 3, 4, 5], [2, 4]) // Returns [2, 4]
+ *
+ * @example
+ * // Filter objects by id
+ * const users = [{ id: 1 }, { id: 2 }, { id: 3 }]
+ * within(users, [1, 2], { transform: u => u.id }) // Returns [{ id: 1 }, { id: 2 }]
+ */
+export function within<T, V = T>(array: T[], ...includeItems: V[]): T[]
+export function within<T, V = T>(array: T[], includeItems: V, options?: { transform: (item: T) => V }): T[]
+export function within<T, V = T>(array: T[], includeItems: V[], options?: { transform: (item: T) => V }): T[]
+export function within<T, V = T>(array: T[], ...args: any[]): T[] {
+  let transform: (item: T) => V
+  let includeItems: V[]
+
+  const [_includeItems, options] = args
+
+  const isRealOptions = isObject(options) && hasOwnProperty(options, 'transform')
+
+  if (!options || !isRealOptions) {
+    transform = (item: T) => item as unknown as V
+    includeItems = isArray(_includeItems) ? _includeItems : args
+  } else if (isRealOptions) {
+    // @ts-ignore
+    transform = options.transform
+    includeItems = toArray(_includeItems)
+  }
+
+  return array.filter(item => includeItems.includes(transform(item)))
 }
 
 /***

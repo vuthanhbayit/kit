@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { at, groupBy, last, sample, range, shuffle, toArray, uniq, without, splice, chuck } from '../src'
+import { at, groupBy, last, sample, range, shuffle, toArray, uniq, without, within, splice, chuck } from '../src'
 
 test('toArray', () => {
   expect(toArray(2)).toStrictEqual([2])
@@ -57,6 +57,32 @@ describe('chuck function', () => {
 test('without', () => {
   expect(without([1, 2, 3, 4, 5], 1)).toStrictEqual([2, 3, 4, 5])
   expect(without([1, 2, 3, 4, 5], 1, 2)).toStrictEqual([3, 4, 5])
+})
+
+describe('within', () => {
+  test('should filter primitive array with spread args', () => {
+    expect(within([1, 2, 3, 4, 5], 2, 4)).toStrictEqual([2, 4])
+  })
+
+  test('should filter primitive array with array arg', () => {
+    expect(within([1, 2, 3, 4, 5], [2, 4])).toStrictEqual([2, 4])
+  })
+
+  test('should filter objects by transform function', () => {
+    const users = [{ id: 1, name: 'A' }, { id: 2, name: 'B' }, { id: 3, name: 'C' }]
+    const result = within(users, [1, 2], { transform: (u: { id: number }) => u.id })
+    expect(result).toStrictEqual([{ id: 1, name: 'A' }, { id: 2, name: 'B' }])
+  })
+
+  test('should return empty array when no matches', () => {
+    expect(within([1, 2, 3], [4, 5])).toStrictEqual([])
+  })
+
+  test('should handle single value with transform', () => {
+    const items = [{ id: 1 }, { id: 2 }, { id: 3 }]
+    const result = within(items, 2, { transform: (i: { id: number }) => i.id })
+    expect(result).toStrictEqual([{ id: 2 }])
+  })
 })
 
 test('groupBy', () => {
