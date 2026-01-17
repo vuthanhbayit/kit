@@ -4,8 +4,6 @@
 
 - [@vt7/utils](packages/utils/): The `@vt7/utils` package comprises common utilities and functions to streamline application development.
 
-- [@vt7/image](packages/image/): The `@vt7/image` package contains the providers for the @nuxt/image module.
-
 - [@vt7/composables](packages/vue-composables/): The `@vt7/composables` package provides Vue.js composables, enabling efficient reuse of application logic and components.
 
 - [@vt7/fetch](packages/axios-fetch/): The `@vt7/fetch` package is a wrapper of the Axios package, it contains functions that make it easier to work with axios and easier to debug and cancel.
