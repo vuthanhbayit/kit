@@ -111,17 +111,21 @@ export const getChildren = <T extends TreeNode, K extends keyof T>(tree: Tree<T>
 }
 
 /**
- * Applies a callback function to each node in a tree.
+ * Applies a callback function to each node in a tree recursively.
  * @template T - The type of the node data.
  * @param tree - The array of root nodes of the tree.
  * @param callback - The callback function to apply to each node.
  */
 export const forEachTree = <T extends TreeNode>(tree: Tree<T>[], callback: (node: Tree<T>) => void) => {
-  for (const node of tree) {
+  const traverse = (node: Tree<T>) => {
     callback(node)
-    for (const element of node.children) {
-      callback(element)
+    for (const child of node.children) {
+      traverse(child)
     }
+  }
+
+  for (const node of tree) {
+    traverse(node)
   }
 }
 

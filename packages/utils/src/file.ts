@@ -113,14 +113,23 @@ export const bytesToSize = (bytes: number, unit = 1024) => {
  * @returns {Promise<{ width: number; height: number }>} A promise that resolves to an object containing the width and height of the image.
  */
 export const getImageDimensions = (file: File | Blob): Promise<{ width: number; height: number }> => {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     const img = new Image()
+    const url = URL.createObjectURL(file)
+
     img.addEventListener('load', () => {
+      URL.revokeObjectURL(url)
       resolve({
         height: img.height,
         width: img.width,
       })
     })
-    img.src = URL.createObjectURL(file)
+
+    img.addEventListener('error', () => {
+      URL.revokeObjectURL(url)
+      reject(new Error('Failed to load image'))
+    })
+
+    img.src = url
   })
 }

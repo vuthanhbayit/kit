@@ -1,4 +1,4 @@
-import { clearUndefined, cloneDeep } from './function'
+import { clearUndefined } from './function'
 import { isDefined } from './guards'
 import { has } from './object'
 
@@ -48,7 +48,9 @@ export const isEqual = <T>(value: T, other: T) => {
   }
 
   if (isArray(value) && isArray(other)) {
-    return clearUndefined(value).sort().toString() === clearUndefined(other).sort().toString()
+    const a = [...clearUndefined(value)].sort()
+    const b = [...clearUndefined(other)].sort()
+    return a.toString() === b.toString()
   }
 
   if (isObject(value) && isObject(other)) {
@@ -67,7 +69,9 @@ export const isStrictEqual = <T>(value: T, other: T) => {
   }
 
   if (isArray(value) && isArray(other)) {
-    return cloneDeep(value).sort().toString() === cloneDeep(other).sort().toString()
+    const a = [...value].sort()
+    const b = [...other].sort()
+    return a.toString() === b.toString()
   }
 
   if (isObject(value) && isObject(other)) {

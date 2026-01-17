@@ -89,7 +89,8 @@ export function clearUndefined(objectOrArray: any, checkDefineFn = (value: any) 
 }
 
 /**
- * Creates a deep copy of an object or array by serializing it to JSON and then parsing it back.
+ * Creates a deep copy of an object or array.
+ * Uses structuredClone when available, falls back to JSON serialization.
  *
  * @param {any} value - The value to be deep-copied.
  * @returns {any} - A deep copy of the input value.
@@ -107,6 +108,9 @@ export function clearUndefined(objectOrArray: any, checkDefineFn = (value: any) 
  * // Returns a new array with the same elements and nested arrays
  */
 export const cloneDeep = <T>(value: T): T => {
+  if (typeof structuredClone === 'function') {
+    return structuredClone(value)
+  }
   return JSON.parse(JSON.stringify(value))
 }
 

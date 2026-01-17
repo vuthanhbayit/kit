@@ -1,7 +1,6 @@
 import { get, hasOwnProperty } from './object'
 import { isArray, isArrayLike, isExist, isObject } from './is'
 import { isDefined, isUndefined } from './guards'
-import { cloneDeep } from './function'
 
 /**
  * Converts a value to an array. If the value is already an array, it is returned as-is.
@@ -287,10 +286,7 @@ export const splice = <T>(array: T[], start: number, end?: number): T[] => {
     return []
   }
 
-  const _newArray = cloneDeep(array)
-  _newArray.splice(start, end - start)
-
-  return _newArray
+  return [...array.slice(0, start), ...array.slice(end)]
 }
 
 /**
@@ -306,14 +302,28 @@ export const limit = <T>(array: T[], count: number): T[] => {
 }
 
 /**
- * Shuffles an array and picks n random elements from the shuffled array.
+ * Picks n random elements from an array using partial Fisher-Yates shuffle.
  *
- * @param {T[]} array - The array to shuffle and pick elements from.
+ * @param {T[]} array - The array to pick elements from.
  * @param {number} n - The number of elements to pick.
- * @returns {T[]} An array containing n random elements from the shuffled array. If n is greater than the length of the array, returns an array containing all of the elements of the original array.
+ * @returns {T[]} An array containing n random elements. If n is greater than the length of the array, returns an array containing all of the elements of the original array.
  */
 export const sample = <T>(array: T[], n: number): T[] => {
-  return limit(shuffle(array), n)
+  const length = array.length
+  const actualN = Math.min(n, length)
+
+  if (actualN <= 0) {
+    return []
+  }
+
+  const copy = [...array]
+
+  for (let i = 0; i < actualN; i++) {
+    const j = i + Math.floor(Math.random() * (length - i))
+    ;[copy[i], copy[j]] = [copy[j], copy[i]]
+  }
+
+  return copy.slice(0, actualN)
 }
 
 /**
