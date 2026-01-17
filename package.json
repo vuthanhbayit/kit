@@ -1,7 +1,6 @@
 {
   "name": "@vt7/kit",
   "description": "",
-  "private": true,
   "repository": "@vt7/kit",
   "license": "MIT",
   "sideEffects": false,
