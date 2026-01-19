@@ -1,6 +1,6 @@
 {
   "name": "@vt7/composables",
-  "version": "7.0.0",
+  "version": "7.0.1",
   "description": "",
   "license": "MIT",
   "homepage": "https://github.com/vuthanhbayit/kit/tree/main/packages/composables#readme",
@@ -36,7 +36,7 @@
     "prepublishOnly": "pnpm build"
   },
   "dependencies": {
-    "@vt7/utils": "^7.0.0"
+    "@vt7/utils": "^7.0.1"
   },
   "peerDependencies": {
     "@vueuse/core": ">=10.0.0",

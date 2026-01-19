@@ -1,6 +1,6 @@
 {
   "name": "@vt7/fetch",
-  "version": "7.0.0",
+  "version": "7.0.1",
   "description": "This is a wrapper axios plugin",
   "license": "MIT",
   "homepage": "https://github.com/vuthanhbayit/kit/tree/main/packages/fetch#readme",
@@ -37,7 +37,7 @@
     "prepublishOnly": "pnpm build"
   },
   "dependencies": {
-    "@vt7/utils": "7.0.0",
+    "@vt7/utils": "^7.0.1",
     "axios": "^1.5.1"
   },
   "gitHead": "d0a1973b95d573c757feeb68c844683eba3cf1c5"
